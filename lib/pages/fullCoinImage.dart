@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 
@@ -8,8 +10,20 @@ class CoinImage extends StatefulWidget {
   State<CoinImage> createState() => _CoinImageState();
 }
 
-class _CoinImageState extends State<CoinImage> {
+class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
   double? _deviceHeight, _deviceWidth;
+  AnimationController? _coinAnimationController;
+  @override
+  void initState() {
+    super.initState();
+
+    _coinAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    );
+    _coinAnimationController!.repeat();
+  }
+
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
@@ -23,22 +37,35 @@ class _CoinImageState extends State<CoinImage> {
           children: [
             IconButton(
               onPressed: () {
+                _coinAnimationController!.dispose();
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.cancel),
               iconSize: 32,
               color: Colors.red,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: _deviceHeight! * 0.12,
-                  vertical: _deviceHeight! * 0.25),
-              child: Image(
-                image: NetworkImage(widget.picLink),
-                fit: BoxFit.contain,
-              ),
-            ),
+            _coinAnimation(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _coinAnimation() {
+    return AnimatedBuilder(
+      animation: _coinAnimationController!.view,
+      builder: (_context, _child) {
+        return Transform.rotate(
+          angle: _coinAnimationController!.value * pi * 2,
+          child: _child,
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: _deviceHeight! * 0.12, vertical: _deviceHeight! * 0.25),
+        child: Image(
+          image: NetworkImage(widget.picLink),
+          fit: BoxFit.contain,
         ),
       ),
     );
