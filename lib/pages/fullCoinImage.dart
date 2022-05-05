@@ -29,6 +29,7 @@ class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
