@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:coincap/pages/home_page.dart';
+import 'home_page.dart';
 
-class CoinImage extends StatelessWidget {
+class CoinImage extends StatefulWidget {
   final String picLink;
+  const CoinImage({Key? key, required this.picLink}) : super(key: key);
+  @override
+  State<CoinImage> createState() => _CoinImageState();
+}
 
-  CoinImage({required this.picLink});
+class _CoinImageState extends State<CoinImage> {
   double? _deviceHeight, _deviceWidth;
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class CoinImage extends StatelessWidget {
                   horizontal: _deviceHeight! * 0.12,
                   vertical: _deviceHeight! * 0.25),
               child: Image(
-                image: NetworkImage(picLink),
+                image: NetworkImage(widget.picLink),
                 fit: BoxFit.contain,
               ),
             ),

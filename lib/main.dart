@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CoinCap',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color.fromRGBO(88, 60, 197, 1.0),
       ),
       home: const Home(),
