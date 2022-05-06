@@ -150,10 +150,7 @@ class _HomeState extends State<Home> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (BuildContext context) {
-            return Country(
-              llist: list,
-              selectedCoin: slcoin,
-            );
+            return Details(list: list, coin: slcoin);
           }),
         );
       },

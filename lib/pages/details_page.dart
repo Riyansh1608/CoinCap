@@ -20,6 +20,10 @@ class Details extends StatelessWidget {
             itemBuilder: (_context, _index) {
               String _currency = _currencies[_index];
               return ListTile(
+                leading: Icon(
+                  Icons.currency_bitcoin,
+                  color: Colors.white,
+                ),
                 title: Text(
                   "${_currency.toUpperCase()} : ${list[_currency]}",
                   style: const TextStyle(

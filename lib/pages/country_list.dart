@@ -24,7 +24,6 @@ class Country extends StatelessWidget {
           itemCount: curCon.length,
           itemBuilder: (context, index) {
             String s = curCon[index];
-            print(s);
             return ListTile(
               leading: Icon(Icons.no_drinks),
               title: Text(
