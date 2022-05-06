@@ -1,6 +1,7 @@
 import 'dart:convert'; //
 import 'package:coincap/models/app_config.dart';
 import 'package:coincap/pages/home_page.dart';
+import 'package:coincap/pages/splash_screen.dart';
 import 'package:coincap/services/http_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(88, 60, 197, 1.0),
       ),
-      home: const Home(),
+      home: const Splash(),
     );
   }
 }
