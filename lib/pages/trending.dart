@@ -25,8 +25,10 @@ class _TrendingState extends State<Trending> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(230, 241, 92, 6),
+        shadowColor: Colors.orangeAccent,
         title: const Text("Trending"),
-        // leading: const Icon(Icons.trending_up_outlined),
+        elevation: 4,
       ),
       body: futureTrending(),
     );

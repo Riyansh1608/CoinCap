@@ -28,27 +28,33 @@ class _HomeState extends State<Home> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: _dataWidgets(),
-        ),
+      body: Center(
+        child: _dataWidgets(),
       ),
     );
   }
 
   Widget _topBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(
-          width: 60,
-        ),
-        _selectedCoinDropDown(),
-        const SizedBox(
-          width: 40,
-        ),
-        _trending(),
-      ],
+    return Container(
+      height: _deviceHeight! * 0.09,
+      margin: EdgeInsets.only(top: _deviceHeight! * 0.02),
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(230, 241, 92, 6),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 60,
+          ),
+          _selectedCoinDropDown(),
+          const SizedBox(
+            width: 40,
+          ),
+          _trending(),
+        ],
+      ),
     );
   }
 
@@ -86,7 +92,7 @@ class _HomeState extends State<Home> {
       dropdownColor: const Color.fromRGBO(83, 88, 206, 1.0),
       icon: const Icon(
         Icons.arrow_drop_down_sharp,
-        color: Colors.red,
+        color: Colors.white,
         size: 50,
       ),
       underline: Container(),
@@ -128,7 +134,7 @@ class _HomeState extends State<Home> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _topBar(),
-              _coinImage(_imageLink),
+              _coinImage(_imageLink, _selectedCoin),
               _price(price, _list, _selectedCoin),
               _changeInPercent24h(_percentChange24h),
               _description(_data["description"]["en"]),
@@ -145,13 +151,16 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _coinImage(String _imageLink) {
+  Widget _coinImage(String _imageLink, String slc) {
     return GestureDetector(
       onDoubleTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (BuildContext _context) {
-            return CoinImage(picLink: _imageLink);
+            return CoinImage(
+              picLink: _imageLink,
+              selectedcoin: slc,
+            );
           }),
         );
       },

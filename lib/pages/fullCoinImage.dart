@@ -5,7 +5,12 @@ import 'home_page.dart';
 
 class CoinImage extends StatefulWidget {
   final String picLink;
-  const CoinImage({Key? key, required this.picLink}) : super(key: key);
+  final String selectedcoin;
+  const CoinImage({
+    Key? key,
+    required this.picLink,
+    required this.selectedcoin,
+  }) : super(key: key);
   @override
   State<CoinImage> createState() => _CoinImageState();
 }
@@ -13,6 +18,7 @@ class CoinImage extends StatefulWidget {
 class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
   double? _deviceHeight, _deviceWidth;
   AnimationController? _coinAnimationController;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +35,7 @@ class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _imageBgColor(),
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -45,14 +51,14 @@ class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
               iconSize: 32,
               color: Colors.red,
             ),
-            _coinAnimation(),
+            _coinAnimation,
           ],
         ),
       ),
     );
   }
 
-  Widget _coinAnimation() {
+  Widget get _coinAnimation {
     return AnimatedBuilder(
       animation: _coinAnimationController!.view,
       builder: (_context, _child) {
@@ -62,13 +68,33 @@ class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
         );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: _deviceHeight! * 0.12, vertical: _deviceHeight! * 0.25),
-        child: Image(
-          image: NetworkImage(widget.picLink),
-          fit: BoxFit.contain,
+        padding: EdgeInsets.symmetric(vertical: _deviceHeight! * 0.1),
+        child: Center(
+          child: Image(
+            height: _deviceHeight! * 0.6,
+            width: _deviceWidth! * 0.8,
+            image: NetworkImage(widget.picLink),
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
+  }
+
+  Color _imageBgColor() {
+    Color k;
+    if (widget.selectedcoin == "bitcoin") {
+      k = const Color.fromARGB(255, 244, 148, 28);
+    } else if (widget.selectedcoin == "ethereum") {
+      k = Colors.black45;
+    } else if (widget.selectedcoin == "tether") {
+      k = Color.fromARGB(255, 60, 171, 133);
+    } else if (widget.selectedcoin == "cardano") {
+      k = Color.fromARGB(255, 194, 217, 236);
+    } else {
+      k = Colors.white;
+    }
+
+    return k;
   }
 }
