@@ -11,7 +11,7 @@ class Details extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 23, 7, 82),
-        title: Text(coin),
+        title: Text(coin.toUpperCase()),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -20,15 +20,15 @@ class Details extends StatelessWidget {
             itemBuilder: (_context, _index) {
               String _currency = _currencies[_index];
               return ListTile(
-                leading: Icon(
-                  Icons.currency_bitcoin,
-                  color: Colors.white,
+                leading: const Icon(
+                  Icons.money,
+                  color: Colors.yellow,
                 ),
                 title: Text(
                   "${_currency.toUpperCase()} : ${list[_currency]}",
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.w400),
                 ),
               );

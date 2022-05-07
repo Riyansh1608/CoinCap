@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:coincap/pages/country_list.dart';
 import 'package:coincap/pages/details_page.dart';
 import 'package:coincap/pages/fullCoinImage.dart';
+import 'package:coincap/pages/trending.dart';
 import 'package:coincap/services/http_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -30,17 +30,25 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _selectedCoinDropDown(),
-              _dataWidgets(),
-            ],
-          ),
+          child: _dataWidgets(),
         ),
       ),
+    );
+  }
+
+  Widget _topBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(
+          width: 60,
+        ),
+        _selectedCoinDropDown(),
+        const SizedBox(
+          width: 40,
+        ),
+        _trending(),
+      ],
     );
   }
 
@@ -61,7 +69,7 @@ class _HomeState extends State<Home> {
               e.toUpperCase(),
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 40,
+                  fontSize: 34,
                   fontWeight: FontWeight.w600),
             ),
           ),
@@ -76,12 +84,28 @@ class _HomeState extends State<Home> {
         });
       },
       dropdownColor: const Color.fromRGBO(83, 88, 206, 1.0),
-      iconSize: 30,
       icon: const Icon(
         Icons.arrow_drop_down_sharp,
-        color: Colors.white,
+        color: Colors.red,
+        size: 50,
       ),
       underline: Container(),
+    );
+  }
+
+  Widget _trending() {
+    return Container(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Trending()));
+        },
+        child: const Icon(
+          Icons.trending_up,
+          color: Color.fromARGB(255, 72, 255, 0),
+          size: 40,
+        ),
+      ),
     );
   }
 
@@ -95,6 +119,7 @@ class _HomeState extends State<Home> {
           num _percentChange24h = _data["market_data"]
               ["price_change_percentage_24h_in_currency"]["inr"];
           String _imageLink = _data["image"]["large"];
+
           Map _list = _data["market_data"]["current_price"];
 
           return Column(
@@ -102,6 +127,7 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              _topBar(),
               _coinImage(_imageLink),
               _price(price, _list, _selectedCoin),
               _changeInPercent24h(_percentChange24h),

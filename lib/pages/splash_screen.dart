@@ -27,7 +27,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   }
 
   startTime() async {
-    return Timer(const Duration(seconds: 5), () {
+    return Timer(const Duration(seconds: 8), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const Home()));
     });
