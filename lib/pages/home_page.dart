@@ -17,6 +17,7 @@ class _HomeState extends State<Home> {
   double? _deviceHeight, _deviceWidth;
   String _selectedCoin = "bitcoin";
   HTTPService? _http;
+  String currency = "inr";
   @override
   void initState() {
     super.initState();
@@ -28,33 +29,30 @@ class _HomeState extends State<Home> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(230, 241, 92, 6),
+        toolbarHeight: _deviceHeight! * 0.09,
+        title: _topBar(),
+      ),
       body: Center(
         child: _dataWidgets(),
       ),
+      drawer: const Drawer(),
     );
   }
 
   Widget _topBar() {
-    return Container(
-      height: _deviceHeight! * 0.09,
-      margin: EdgeInsets.only(top: _deviceHeight! * 0.02),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(230, 241, 92, 6),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 60,
-          ),
-          _selectedCoinDropDown(),
-          const SizedBox(
-            width: 40,
-          ),
-          _trending(),
-        ],
-      ),
+    return Row(
+      children: [
+        SizedBox(
+          width: _deviceWidth! * 0.06,
+        ),
+        _selectedCoinDropDown(),
+        SizedBox(
+          width: _deviceWidth! * 0.06,
+        ),
+        _trending(),
+      ],
     );
   }
 
@@ -82,6 +80,8 @@ class _HomeState extends State<Home> {
         )
         .toList();
     return DropdownButton(
+      elevation: 4,
+      iconEnabledColor: Colors.amber,
       value: _selectedCoin,
       items: _items,
       onChanged: (dynamic _value) {
@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
       builder: (BuildContext _context, AsyncSnapshot _snapshot) {
         if (_snapshot.hasData) {
           Map _data = jsonDecode(_snapshot.data.toString());
-          num price = _data["market_data"]["current_price"]["inr"];
+          num price = _data["market_data"]["current_price"][currency];
           num _percentChange24h = _data["market_data"]
               ["price_change_percentage_24h_in_currency"]["inr"];
           String _imageLink = _data["image"]["large"];
@@ -133,9 +133,8 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _topBar(),
               _coinImage(_imageLink, _selectedCoin),
-              _price(price, _list, _selectedCoin),
+              _price(price, _list, _selectedCoin, currency),
               _changeInPercent24h(_percentChange24h),
               _description(_data["description"]["en"]),
             ],
@@ -153,7 +152,7 @@ class _HomeState extends State<Home> {
 
   Widget _coinImage(String _imageLink, String slc) {
     return GestureDetector(
-      onDoubleTap: () {
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (BuildContext _context) {
@@ -179,28 +178,26 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _price(num _rate, Map list, String slcoin) {
+  Widget _price(num _rate, Map list, String slcoin, String curr) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        String? result = await Navigator.push(
           context,
           MaterialPageRoute(builder: (BuildContext context) {
             return Details(list: list, coin: slcoin);
           }),
         );
+        if (result != null) {
+          changeData(result);
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const Icon(
-            Icons.currency_rupee_sharp,
-            color: Colors.white,
-            size: 30,
-          ),
           Text(
-            "${_rate.toString()} ",
+            " ${curr.toUpperCase()}  ${_rate.toString()} ",
             style: const TextStyle(
                 fontSize: 34, fontWeight: FontWeight.w600, color: Colors.white),
           ),
@@ -246,5 +243,11 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void changeData(String _cur) {
+    setState(() {
+      currency = _cur;
+    });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Details extends StatelessWidget {
@@ -10,16 +11,21 @@ class Details extends StatelessWidget {
     List _currencies = list.keys.toList();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 7, 82),
+        backgroundColor: const Color.fromARGB(230, 241, 92, 6),
         title: Text(coin.toUpperCase()),
         centerTitle: true,
       ),
       body: SafeArea(
         child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            dragStartBehavior: DragStartBehavior.start,
             itemCount: _currencies.length,
             itemBuilder: (_context, _index) {
               String _currency = _currencies[_index];
               return ListTile(
+                horizontalTitleGap: 20,
+                minVerticalPadding: 20,
+                onLongPress: () => Navigator.pop(context, _currency),
                 leading: const Icon(
                   Icons.money,
                   color: Colors.yellow,

@@ -43,14 +43,13 @@ class _CoinImageState extends State<CoinImage> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             IconButton(
-              onPressed: () {
-                _coinAnimationController!.dispose();
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.cancel),
-              iconSize: 32,
-              color: Colors.red,
-            ),
+                onPressed: () {
+                  _coinAnimationController!.dispose();
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel),
+                iconSize: 32,
+                color: Colors.black87),
             _coinAnimation,
           ],
         ),
